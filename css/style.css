@@ -1,0 +1,32 @@
+h1 {
+  margin: 0;
+}
+
+#container {
+  min-width: 600px;
+  min-height: 600px;
+  background: green;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+#sidebar {
+  width: 20%;
+
+}
+
+.col {
+  width: 40%;
+  box-sizing: border-box;
+}
+
+.row {
+  height: 50%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.card {
+  width: 83px;
+  height: 121px;
+}
