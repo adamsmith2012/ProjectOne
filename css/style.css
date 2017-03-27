@@ -6,12 +6,17 @@ h1 {
   min-width: 600px;
   min-height: 600px;
   background: green;
+  border-radius: 10px;
+  padding: 10px;
   display: flex;
   flex-flow: row wrap;
 }
 
 #sidebar {
   width: 20%;
+  border-radius: 10px;
+  background-color: lightgray;
+  box-shadow: 0 0 20px black;
 
 }
 
@@ -30,4 +35,6 @@ h1 {
   width: 83px;
   height: 121px;
   border-radius: 5px;
+  margin-top: 10px;
+  margin-right: -50px;
 }
