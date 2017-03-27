@@ -20,8 +20,32 @@ h1 {
 
 }
 
+#blackjack-table {
+  width: 80%;
+  display: flex;
+}
+
+#blackjack-table h1 {
+  color: white;
+}
+
+#dealer-cards {
+  position: relative;
+  text-align: center;
+}
+
+#message-pane {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  bottom: 30px;
+  margin: auto;
+  color: white;
+}
+
 .col {
-  width: 40%;
+  width: 50%;
   box-sizing: border-box;
 }
 
@@ -37,4 +61,5 @@ h1 {
   border-radius: 5px;
   margin-top: 10px;
   margin-right: -50px;
+  transform: translateX(-25px);
 }

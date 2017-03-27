@@ -162,15 +162,22 @@ var game = {
       playerWin = false;
     }
 
+    var message = ""; // message that will be displayed after round
+
     if(playerWin) {
+      message = "You win!";
       UI.setPlayerWins(++player.wins);
     } else {
+      message = "You lose!";
       UI.setPlayerLosses(++player.losses);
     }
 
-    sleep(1000); // wait 1 second
+    UI.displayMessage(message); // display message
 
-    game.start();
+    setTimeout(function() {
+      UI.displayMessage(''); // clear message before next round
+      game.start();
+    }, 2000);
   }
 }
 
@@ -209,7 +216,7 @@ var dealer = {
       dealer.busted = true;
     }
 
-    setTimeout(game.endRound, 2000);
+    game.endRound();
   },
   hit: function() {
     var rand = Math.floor(Math.random() * deck.cards.length);
@@ -247,7 +254,7 @@ var player = {
     var total = player.calcHand();
 
     if (total > 21) {
-      setTimeout(player.bust, 1000);
+      player.bust();
     }
   },
   stand: function() {
@@ -274,6 +281,9 @@ var UI = {
   },
   setPlayerLosses: function(val) {
     $('#player-losses').text("Losses: " + val);
+  },
+  displayMessage: function(message) {
+    $('#dealer-cards').append($('#message-pane').text(message));
   }
 }
 
