@@ -29,4 +29,5 @@ h1 {
 .card {
   width: 83px;
   height: 121px;
+  border-radius: 5px;
 }

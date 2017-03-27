@@ -7,6 +7,18 @@ $(function() {
 
 })
 
+
+/*************************
+**** Helper Functions ****
+*************************/
+
+function sleep(miliseconds) {
+   var currentTime = new Date().getTime();
+
+   while (currentTime + miliseconds >= new Date().getTime()) {
+   }
+}
+
 /*************************
 ****** Game Objects ******
 *************************/
@@ -41,6 +53,14 @@ var card = function(initSuit, initValue) {
       default:
         return parseInt(value);
     }
+  }
+
+  this.hide = function() {
+    img = "images/cards/blue_back.jpg";
+  }
+
+  this.show = function() {
+    img = "images/cards/" + value + "_of_" + suit + ".png";
   }
 }
 
@@ -93,7 +113,7 @@ var game = {
   },
   start: function() {
 
-    $('.card').remove();
+    $('#cards-col .card').remove();
     player.hand = [];
     dealer.hand = [];
 
@@ -108,57 +128,88 @@ var game = {
     var isPlayerCard = true; // when true, card dealt goes to player, false goes to dealer
     for (var i = 0; i < 4; i++) {
       // get random card
+
       var rand = Math.floor(Math.random() * deck.cards.length);
       var card = deck.cards.splice(rand, 1)[0];
 
-      var elemId = ''
-      var img = card.getImg();
+      var elemId = '';
 
       if (isPlayerCard) {
         player.hand.push(card);
         elemId = "#player-cards";
         isPlayerCard = false;
       } else {
+        if (i == 3) { // if 2nd dealer card make it hidden
+          card.hide();
+        }
         dealer.hand.push(card);
         elemId = "#dealer-cards"
         isPlayerCard = true;
       }
 
-      UI.displayCard(elemId, img); // display card to the screen
+      UI.displayCard(elemId, card.getImg()); // display card to the screen
     }
 
     player.calcHand();
+  },
+  endRound: function() {
+    var playerWin;
+    if(player.busted) {
+      playerWin = false;
+    } else if (dealer.busted || player.calcHand() > dealer.calcHand()) {
+      playerWin = true;
+    } else {
+      playerWin = false;
+    }
+
+    if(playerWin) {
+      UI.setPlayerWins(++player.wins);
+    } else {
+      UI.setPlayerLosses(++player.losses);
+    }
+
+    sleep(1000); // wait 1 second
+
+    game.start();
   }
 }
 
 var dealer = {
   hand: [],
+  busted: false,
   calcHand: function() {
+    var total = 0;
+
     for (var i = 0; i < this.hand.length; i++) {
-      var total = 0;
-      for (var i = 0; i < this.hand.length; i++) {
-        //console.log(this.hand[i].getPointValue());
-        total += this.hand[i].getPointValue();
-      }
-      return total;
+      //console.log(this.hand[i].getPointValue());
+      total += this.hand[i].getPointValue();
     }
+    return total;
   },
   doTurn: function() {
-    var done = false;
 
-    while(!done) {
+    $('#dealer-cards .card').remove();
+    for (var i = 0; i < dealer.hand.length; i++) {
+      var card = dealer.hand[i];
+      card.show();
+      UI.displayCard("#dealer-cards", card.getImg()); // display card to the screen
+    }
+
+    dealer.busted = false;
+
+    var total = dealer.calcHand();
+
+    while(total < 17) { // keep hitting while total is under 17
       dealer.hit();
 
-      var total = dealer.calcHand();
-
-      if (total > 21) {
-        dealer.bust();
-        done = true;
-      } else if (total > 16) {
-        dealer.stand();
-        done = true;
-      }
+      total = dealer.calcHand();
     }
+
+    if (total > 21) {
+      dealer.busted = true;
+    }
+
+    setTimeout(game.endRound, 2000);
   },
   hit: function() {
     var rand = Math.floor(Math.random() * deck.cards.length);
@@ -167,18 +218,14 @@ var dealer = {
     dealer.hand.push(card);
 
     UI.displayCard("#dealer-cards", card.getImg()); // display card to the screen
-  },
-  stand: function() {
-    console.log("dealer: stand on " + dealer.calcHand());
-  },
-  bust: function() {
-    console.log("dealer: bust on " + dealer.calcHand());
-    game.start();
   }
 }
 
 var player = {
   hand: [],
+  wins: 0,
+  losses: 0,
+  busted: false,
   calcHand: function() {
     var total = 0;
     for (var i = 0; i < this.hand.length; i++) {
@@ -187,6 +234,9 @@ var player = {
     return total;
   },
   hit: function() {
+
+    player.busted = false;
+
     var rand = Math.floor(Math.random() * deck.cards.length);
     var card = deck.cards.splice(rand, 1)[0];
 
@@ -197,7 +247,7 @@ var player = {
     var total = player.calcHand();
 
     if (total > 21) {
-      player.bust();
+      setTimeout(player.bust, 1000);
     }
   },
   stand: function() {
@@ -206,7 +256,8 @@ var player = {
   },
   bust: function() {
     console.log("player: bust on " + player.calcHand());
-    game.start();
+    player.busted = true;
+    game.endRound();
   }
 }
 
@@ -217,6 +268,12 @@ var player = {
 var UI = {
   displayCard: function(elemId, img) {
     $(elemId).append($('<img>').addClass('card').attr('src', img));
+  },
+  setPlayerWins: function(val) {
+    $('#player-wins').text("Wins: " + val);
+  },
+  setPlayerLosses: function(val) {
+    $('#player-losses').text("Losses: " + val);
   }
 }
 
