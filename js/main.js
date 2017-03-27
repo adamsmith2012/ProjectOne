@@ -1,16 +1,8 @@
 $(function() {
 
-  game.setup();
+  $("#start-btn").on('click', game.start);
 
-  $("#deal-btn").on('click', function() {
-
-    // get random card
-    var rand = Math.floor(Math.random() * deck.cards.length);
-    var card = deck.cards[rand].getImg();
-
-    // TODO: add card value and suit to img
-    $('#player-cards').append($('<img>').addClass('card').attr('src', card));
-  })
+  $("#hit-btn").on('click' , player.hit);
 
 })
 
@@ -33,6 +25,21 @@ var card = function(initSuit, initValue) {
 
   this.display = function() {
     console.log(value + " of " + suit);
+  }
+
+  this.getPointValue = function() {
+    switch (value) {
+      case "ace":
+        return 11;
+        break;
+      case "jack":
+      case "queen":
+      case "king":
+        return 10;
+        break;
+      default:
+        return parseInt(value);
+    }
   }
 }
 
@@ -76,24 +83,73 @@ var deck = {
     for (var i = 0; i < this.cards.length; i++) {
       this.cards[i].display();
     }
-  },
-  shuffle: function() {
-    // TODO:
   }
 }
 
 var game = {
   setup: function() {
     deck.create();
+  },
+  start: function() {
+    game.setup();
+    game.dealCards();
+  },
+  dealCards: function() {
+
+    var isPlayerCard = true; // when true, card dealt goes to player, false goes to dealer
+    for (var i = 0; i < 4; i++) {
+      // get random card
+      var rand = Math.floor(Math.random() * deck.cards.length);
+      var card = deck.cards[rand];
+
+      var elemId = ''
+      var img = card.getImg();
+
+      if (isPlayerCard) {
+        player.hand.push(card);
+        elemId = "#player-cards";
+        isPlayerCard = false;
+      } else {
+        dealer.hand.push(card);
+        elemId = "#dealer-cards"
+        isPlayerCard = true;
+      }
+
+      UI.displayCard(elemId, img); // display card to the screen
+    }
   }
 }
 
 var dealer = {
-  // TODO:
+  hand: [],
+  calcHand: function() {
+    for (var i = 0; i < this.hand.length; i++) {
+
+    }
+  }
 }
 
 var player = {
-  // TODO:
+  hand: [],
+  calcHand: function() {
+    var total = 0;
+    for (var i = 0; i < this.hand.length; i++) {
+      //console.log(this.hand[i].getPointValue());
+      total += this.hand[i].getPointValue();
+    }
+    console.log(total);
+    return total;
+  },
+  hit: function() {
+    var rand = Math.floor(Math.random() * deck.cards.length);
+    var card = deck.cards[rand];
+
+    player.hand.push(card);
+
+    UI.displayCard("#player-cards", card.getImg()); // display card to the screen
+
+    player.calcHand();
+  }
 }
 
 
@@ -104,19 +160,16 @@ var UI = {
   // changeShape: function($elem) {
   //   $elem.attr('class', App.classNames[App.clicks]);
   // }
+
+  displayCard: function(elemId, img) {
+    $(elemId).append($('<img>').addClass('card').attr('src', img));
+  }
 }
 
 /*************************
 ***** Event Handlers *****
 *************************/
 var EventHandlers = {
-  // onClickChangeShape: function() {
-  //   UI.changeShape($(this));
-  //   App.incrementClicks();
-  //   if (App.clicks == App.classNames.length) {
-  //     App.clicks = 0;
-  //   }
-  // }
 
 
 
