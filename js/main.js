@@ -12,11 +12,52 @@ $(function() {
 **** Helper Functions ****
 *************************/
 
-function sleep(miliseconds) {
+var sleep = function(miliseconds) {
    var currentTime = new Date().getTime();
 
    while (currentTime + miliseconds >= new Date().getTime()) {
    }
+}
+
+var calculateHand = function(hand) {
+
+  var tempHand = [];
+  // put point values into new array to be counted
+  for (var i = 0; i < hand.length; i++) {
+    tempHand.push(hand[i].getPointValue());
+  }
+
+  var finishedCalc = true;
+  var busted = false;
+
+  do {
+    var total = 0;
+    var isAce = false;
+    finishedCalc = true;
+
+    for (var i = 0; i < tempHand.length; i++) {
+      if (tempHand[i] == 11) {
+        if (busted) {
+          tempHand[i] = 1;
+          isAce = false;
+          busted = false;
+        } else {
+          isAce = true;
+        }
+      }
+
+      total += tempHand[i];
+    }
+
+    if (total > 21) {
+      busted = true;
+    }
+    if (isAce && busted) {
+      finishedCalc = false;
+    }
+
+  }  while (!finishedCalc);
+  return total;
 }
 
 /*************************
@@ -153,7 +194,10 @@ var game = {
     player.calcHand();
   },
   endRound: function() {
+
     var playerWin;
+
+    // TODO: check for push
     if(player.busted) {
       playerWin = false;
     } else if (dealer.busted || player.calcHand() > dealer.calcHand()) {
@@ -185,13 +229,7 @@ var dealer = {
   hand: [],
   busted: false,
   calcHand: function() {
-    var total = 0;
-
-    for (var i = 0; i < this.hand.length; i++) {
-      //console.log(this.hand[i].getPointValue());
-      total += this.hand[i].getPointValue();
-    }
-    return total;
+    return calculateHand(this.hand);
   },
   doTurn: function() {
 
@@ -234,11 +272,7 @@ var player = {
   losses: 0,
   busted: false,
   calcHand: function() {
-    var total = 0;
-    for (var i = 0; i < this.hand.length; i++) {
-      total += this.hand[i].getPointValue();
-    }
-    return total;
+    return calculateHand(this.hand);
   },
   hit: function() {
 
