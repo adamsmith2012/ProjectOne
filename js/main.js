@@ -5,6 +5,8 @@ $(function() {
   $("#hit-btn").on('click' , player.hit);
   $("#stand-btn").on('click' , player.stand);
 
+  $(".chip").on('click', player.increaseBet);
+
 })
 
 
@@ -109,7 +111,7 @@ var card = function(initSuit, initValue) {
 }
 
 var chip = function(value) {
-  // TODO:
+  this.value = value;
 }
 
 var deck = {
@@ -230,7 +232,7 @@ var game = {
     setTimeout(function() {
       UI.displayMessage(''); // clear message before next round
       game.start();
-    }, 2000);
+    }, 2500);
   }
 }
 
@@ -277,12 +279,17 @@ var dealer = {
 
 var player = {
   hand: [],
+  chips: 500,
+  bet: 0,
   wins: 0,
   losses: 0,
   pushes: 0,
   busted: false,
   calcHand: function() {
     return calculateHand(this.hand);
+  },
+  increaseBet: function() {
+    player.bet += parseInt($(this).text());
   },
   hit: function() {
 

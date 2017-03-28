@@ -2,6 +2,20 @@ h1 {
   margin: 0;
 }
 
+button {
+  cursor: pointer;
+  width: 70px;
+  height: 30px;
+  margin: 20px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 0 3px black;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
 #container {
   min-width: 600px;
   min-height: 600px;
@@ -31,10 +45,11 @@ h1 {
 #blackjack-table {
   width: 80%;
   display: flex;
+  font-family: cursive;
 }
 
 #blackjack-table h1 {
-  color: white;
+  color: beige;
 }
 
 #dealer-cards {
@@ -68,6 +83,7 @@ h1 {
   width: 83px;
   height: 121px;
   border-radius: 5px;
+  box-shadow: 0 0 10px black;
   margin-top: 30px;
   margin-right: -50px;
   transform: translateX(-25px);
@@ -75,18 +91,48 @@ h1 {
 
 #chip-container {
   width: 80%;
-  padding: 10%;
-  display: flex;
+  padding: 2% 10%;
   justify-content: center;
 }
 
 .chip {
-  height: 100px;
-  width: 100px;
-  background-color: blue;
-  border-radius: 100%;
-  text-align: center;
+  height: 80px;
+  width: 80px;
+  margin: 0 5px;
   display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 80px;
+  font-family: fantasy;
+  border-radius: 100%;
+  box-shadow: 0 0 10px black;
+  cursor: pointer;
+}
+
+.red-chip {
+  background-image: url("../images/red_chip.png");
+  background-position: center;
+  background-size: cover;
+}
+
+.green-chip {
+  background-image: url("../images/green_chip.png");
+  background-position: center;
+  background-size: cover;
+}
+
+.white-chip {
+  background-image: url("../images/white_chip.png");
+  background-position: center;
+  background-size: cover;
+}
+
+#chip-count {
+  position: absolute;
+  color: beige;
+  left: 0;
+  right: 0;
+  bottom: 25px;
 }
 
 #user-action-bar {
@@ -98,9 +144,5 @@ h1 {
 }
 
 .user-action {
-  width: 70px;
-  height: 30px;
-  margin: 20px;
-  background-color: white;
-  border-radius: 5px;
+  box-shadow: 0 0 10px black;
 }
