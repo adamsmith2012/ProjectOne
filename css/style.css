@@ -50,6 +50,7 @@ h1 {
 }
 
 .row {
+  position: relative;
   height: 50%;
   box-sizing: border-box;
   text-align: center;
@@ -59,7 +60,23 @@ h1 {
   width: 83px;
   height: 121px;
   border-radius: 5px;
-  margin-top: 10px;
+  margin-top: 30px;
   margin-right: -50px;
   transform: translateX(-25px);
+}
+
+#user-action-bar {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+}
+
+.user-action {
+  width: 70px;
+  height: 30px;
+  margin: 20px;
+  background-color: white;
+  border-radius: 5px;
 }

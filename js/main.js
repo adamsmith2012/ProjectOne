@@ -166,6 +166,8 @@ var game = {
     }
 
     game.dealCards();
+
+    UI.enableUserAction();
   },
   dealCards: function() {
 
@@ -302,11 +304,13 @@ var player = {
   stand: function() {
     console.log("player: stand on " + player.calcHand());
     dealer.doTurn();
+    UI.disableUserAction();
   },
   bust: function() {
     console.log("player: bust on " + player.calcHand());
     player.busted = true;
     game.endRound();
+    UI.disableUserAction();
   }
 }
 
@@ -329,7 +333,15 @@ var UI = {
   },
   displayMessage: function(message) {
     $('#dealer-cards').append($('#message-pane').text(message));
-  }
+  },
+  disableUserAction: function() {
+    console.log("disable");
+    $('.user-action').attr('disabled', 'disabled');
+  },
+  enableUserAction: function() {
+    console.log("enable");
+    $('.user-action').removeAttr('disabled');
+  },
 }
 
 /*************************
