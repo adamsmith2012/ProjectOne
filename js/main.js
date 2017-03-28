@@ -323,13 +323,13 @@ var UI = {
     $(elemId).append($('<img>').addClass('card').attr('src', img));
   },
   setPlayerWins: function(val) {
-    $('#player-wins').text("Wins: " + val);
+    $('#player-wins span').text(val);
   },
   setPlayerLosses: function(val) {
-    $('#player-losses').text("Losses: " + val);
+    $('#player-losses span').text(val);
   },
   setPlayerPushes: function(val) {
-    $('#player-pushes').text("Pushes: " + val);
+    $('#player-pushes span').text(val);
   },
   displayMessage: function(message) {
     $('#dealer-cards').append($('#message-pane').text(message));
