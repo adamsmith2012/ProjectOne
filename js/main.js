@@ -19,6 +19,8 @@ var sleep = function(miliseconds) {
    }
 }
 
+// calculates the value of a given hand and returns a number
+// params: hand - an array of card Objects
 var calculateHand = function(hand) {
 
   var tempHand = [];
@@ -53,10 +55,11 @@ var calculateHand = function(hand) {
       busted = true;
     }
     if (isAce && busted) {
-      finishedCalc = false;
+      finishedCalc = false; // if there is an ace worth 11 left and the player is over 21, redo the calculation
     }
 
   }  while (!finishedCalc);
+
   return total;
 }
 
@@ -195,25 +198,29 @@ var game = {
   },
   endRound: function() {
 
-    var playerWin;
-
-    // TODO: check for push
+    // TODO: Refactor
+    var result = "";
     if(player.busted) {
-      playerWin = false;
+      result = "loss";
     } else if (dealer.busted || player.calcHand() > dealer.calcHand()) {
-      playerWin = true;
-    } else {
-      playerWin = false;
+      result = "win";
+    } else if (player.calcHand() < dealer.calcHand()) {
+      result = "loss";
+    } else if (player.calcHand() == dealer.calcHand()){
+      result = "push";
     }
 
     var message = ""; // message that will be displayed after round
 
-    if(playerWin) {
+    if(result === "win") {
       message = "You win!";
       UI.setPlayerWins(++player.wins);
-    } else {
+    } else if (result === "loss"){
       message = "You lose!";
       UI.setPlayerLosses(++player.losses);
+    } else {
+      message = "Push!";
+      UI.setPlayerPushes(++player.pushes);
     }
 
     UI.displayMessage(message); // display message
@@ -270,6 +277,7 @@ var player = {
   hand: [],
   wins: 0,
   losses: 0,
+  pushes: 0,
   busted: false,
   calcHand: function() {
     return calculateHand(this.hand);
@@ -315,6 +323,9 @@ var UI = {
   },
   setPlayerLosses: function(val) {
     $('#player-losses').text("Losses: " + val);
+  },
+  setPlayerPushes: function(val) {
+    $('#player-pushes').text("Pushes: " + val);
   },
   displayMessage: function(message) {
     $('#dealer-cards').append($('#message-pane').text(message));
