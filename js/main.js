@@ -173,7 +173,10 @@ var game = {
       deck.create();
     }
 
-    if (player.bet == 0) {
+    if (player.chips == 0 && player.bet == 0) {
+      UI.displayMessage("Select \'New Game\'");
+    }
+    else if (player.bet == 0) {
       UI.displayMessage("Please make a bet");
     } else {
       game.dealCards();
@@ -377,7 +380,6 @@ var player = {
 var UI = {
   toggleUserAction: function() {
     var $btn = $('.user-action');
-    console.log($btn);
     for (var i = 0; i < $btn.length; i++) {
       if ($($btn[i]).attr('disabled')) {
         $($btn[i]).removeAttr('disabled');
