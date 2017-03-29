@@ -178,7 +178,7 @@ var game = {
     } else {
       game.dealCards();
 
-      UI.displayMessage('');
+      UI.displayMessage('Hit / Stand');
       UI.toggleUserAction();
     }
 
@@ -375,6 +375,17 @@ var player = {
 ****** UI Modifiers ******
 *************************/
 var UI = {
+  toggleUserAction: function() {
+    var $btn = $('.user-action');
+    console.log($btn);
+    for (var i = 0; i < $btn.length; i++) {
+      if ($($btn[i]).attr('disabled')) {
+        $($btn[i]).removeAttr('disabled');
+      } else {
+        $($btn[i]).attr('disabled', 'disabled');
+      }
+    }
+  },
   displayCard: function(elemId, img) {
     $(elemId).append($('<img>').addClass('card').attr('src', img));
   },
@@ -389,17 +400,6 @@ var UI = {
   },
   displayMessage: function(message) {
     $('#dealer-cards').append($('#message-pane').text(message));
-  },
-  toggleUserAction: function() {
-    var $btn = $('.user-action');
-    console.log($btn);
-    for (var i = 0; i < $btn.length; i++) {
-      if ($($btn[i]).attr('disabled')) {
-        $($btn[i]).removeAttr('disabled');
-      } else {
-        $($btn[i]).attr('disabled', 'disabled');
-      }
-    }
   },
   updateChipsTotal: function() {
     $('#chip-count span').text(player.chips);

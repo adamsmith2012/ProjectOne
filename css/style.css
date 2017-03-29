@@ -24,6 +24,7 @@ button:disabled {
   padding: 10px;
   display: flex;
   flex-flow: row wrap;
+  background-image: url("../images/table3.png");
 }
 
 .col {
@@ -47,7 +48,7 @@ button:disabled {
   box-sizing: border-box;
   border: 3px ridge white;
   border-radius: 10px;
-  background-color: lightgray;
+  background-color: #e0e0e0;
   box-shadow: 0 0 20px black;
 }
 
@@ -95,9 +96,13 @@ button:disabled {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 30px;
-  margin: auto;
-  color: white;
+  bottom: 20px;
+  margin: 0 10%;
+  background: #e0e0e0;
+  border: 2px ridge white;
+  border-radius: 5px;
+  height: 38px;
+  box-shadow: 0 0 10px black;
 }
 
 /***** Deck Div *****/
