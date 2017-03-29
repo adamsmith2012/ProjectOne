@@ -161,6 +161,11 @@ var game = {
   setup: function() {
     player.reset();
     deck.create();
+
+    $('#deal-btn').removeAttr('disabled');
+    $('#hit-btn').attr('disabled', 'disabled');
+    $('#stand-btn').attr('disabled', 'disabled');
+
     game.start();
   },
   start: function() {
@@ -319,6 +324,7 @@ var player = {
   busted: false,
   reset: function() {
     player.chips = 500;
+    player.bet = 0;
     player.wins = 0;
     player.losses = 0;
     player.pushes = 0;
