@@ -1,11 +1,15 @@
 $(function() {
 
-  $("#start-btn").on('click', game.start);
+  game.setup();
 
-  $("#hit-btn").on('click' , player.hit);
-  $("#stand-btn").on('click' , player.stand);
+  $('#start-btn').on('click', game.setup);
 
-  $(".chip").on('click', player.increaseBet);
+  $('#deal-btn').on('click', game.start);
+
+  $('#hit-btn').on('click' , player.hit);
+  $('#stand-btn').on('click' , player.stand);
+
+  $('.chip').on('click', player.increaseBet);
 
 })
 
@@ -155,7 +159,9 @@ var deck = {
 
 var game = {
   setup: function() {
+    player.reset();
     deck.create();
+    game.start();
   },
   start: function() {
 
@@ -164,13 +170,18 @@ var game = {
     dealer.hand = [];
 
     if (deck.cards.length < 15) {
-      game.setup();
+      deck.create();
     }
 
-    game.dealCards();
+    if (player.bet == 0) {
+      UI.displayMessage("Please make a bet");
+    } else {
+      game.dealCards();
 
-    UI.updateChipsTotal();
-    UI.enableUserAction();
+      UI.displayMessage('');
+      UI.toggleUserAction();
+    }
+
   },
   dealCards: function() {
 
@@ -224,6 +235,7 @@ var game = {
       player.bet = 0;
 
       UI.updateChipsTotal();
+      UI.updateBetTotal();
       UI.setPlayerWins(++player.wins);
     } else if (result === "loss"){
       message = "You lose!";
@@ -231,6 +243,7 @@ var game = {
       player.bet = 0;
 
       UI.updateChipsTotal();
+      UI.updateBetTotal();
       UI.setPlayerLosses(++player.losses);
     } else {
       message = "Push!";
@@ -239,15 +252,16 @@ var game = {
       player.bet = 0;
 
       UI.updateChipsTotal();
+      UI.updateBetTotal();
       UI.setPlayerPushes(++player.pushes);
     }
 
     UI.displayMessage(message); // display message
 
-    setTimeout(function() {
-      UI.displayMessage(''); // clear message before next round
-      game.start();
-    }, 2500);
+    // setTimeout(function() {
+    //   UI.displayMessage(''); // clear message before next round
+    //   game.start();
+    // }, 2500);
   }
 }
 
@@ -300,6 +314,18 @@ var player = {
   losses: 0,
   pushes: 0,
   busted: false,
+  reset: function() {
+    player.chips = 500;
+    player.wins = 0;
+    player.losses = 0;
+    player.pushes = 0;
+
+    UI.setPlayerWins(0);
+    UI.setPlayerLosses(0);
+    UI.setPlayerPushes(0);
+    UI.updateChipsTotal();
+    UI.updateBetTotal();
+  },
   calcHand: function() {
     return calculateHand(this.hand);
   },
@@ -311,8 +337,8 @@ var player = {
       player.chips -= bet;
     }
 
-    console.log("Bet: " + player.bet);
     UI.updateChipsTotal();
+    UI.updateBetTotal();
   },
   hit: function() {
 
@@ -334,13 +360,13 @@ var player = {
   stand: function() {
     console.log("player: stand on " + player.calcHand());
     dealer.doTurn();
-    UI.disableUserAction();
+    UI.toggleUserAction();
   },
   bust: function() {
     console.log("player: bust on " + player.calcHand());
     player.busted = true;
     game.endRound();
-    UI.disableUserAction();
+    UI.toggleUserAction();
   }
 }
 
@@ -364,14 +390,22 @@ var UI = {
   displayMessage: function(message) {
     $('#dealer-cards').append($('#message-pane').text(message));
   },
-  disableUserAction: function() {
-    $('.user-action').attr('disabled', 'disabled');
-  },
-  enableUserAction: function() {
-    $('.user-action').removeAttr('disabled');
+  toggleUserAction: function() {
+    var $btn = $('.user-action');
+    console.log($btn);
+    for (var i = 0; i < $btn.length; i++) {
+      if ($($btn[i]).attr('disabled')) {
+        $($btn[i]).removeAttr('disabled');
+      } else {
+        $($btn[i]).attr('disabled', 'disabled');
+      }
+    }
   },
   updateChipsTotal: function() {
     $('#chip-count span').text(player.chips);
+  },
+  updateBetTotal: function() {
+    $('#player-bet span').text(player.bet);
   }
 }
 

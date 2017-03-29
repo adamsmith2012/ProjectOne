@@ -4,7 +4,7 @@ h1 {
 
 button {
   cursor: pointer;
-  width: 70px;
+  width: 80px;
   height: 30px;
   margin: 20px;
   background-color: white;
@@ -17,54 +17,13 @@ button:disabled {
 }
 
 #container {
-  min-width: 600px;
+  min-width: 700px;
   min-height: 600px;
   background: green;
   border-radius: 10px;
   padding: 10px;
   display: flex;
   flex-flow: row wrap;
-}
-
-#sidebar {
-  width: 20%;
-  border-radius: 10px;
-  background-color: lightgray;
-  box-shadow: 0 0 20px black;
-}
-
-.stat {
-  padding: 0 20px;
-  text-align: left;
-}
-
-.stat span {
-  float: right;
-}
-
-#blackjack-table {
-  width: 80%;
-  display: flex;
-  font-family: cursive;
-}
-
-#blackjack-table h1 {
-  color: beige;
-}
-
-#dealer-cards {
-  position: relative;
-  text-align: center;
-}
-
-#message-pane {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  bottom: 30px;
-  margin: auto;
-  color: white;
 }
 
 .col {
@@ -79,6 +38,42 @@ button:disabled {
   text-align: center;
 }
 
+/*************************
+******** Sidebar *********
+*************************/
+
+#sidebar {
+  width: 20%;
+  box-sizing: border-box;
+  border: 3px ridge white;
+  border-radius: 10px;
+  background-color: lightgray;
+  box-shadow: 0 0 20px black;
+}
+
+.stat {
+  padding: 0 20px;
+  text-align: left;
+}
+
+.stat span {
+  float: right;
+}
+
+/*************************
+***** Blackjack Table ****
+*************************/
+
+#blackjack-table {
+  width: 80%;
+  display: flex;
+  font-family: cursive;
+}
+
+#blackjack-table h1 {
+  color: beige;
+}
+
 .card {
   width: 83px;
   height: 121px;
@@ -89,10 +84,59 @@ button:disabled {
   transform: translateX(-25px);
 }
 
+/***** Dealer Div *****/
+
+#dealer-cards {
+  position: relative;
+  text-align: center;
+}
+
+#message-pane {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 30px;
+  margin: auto;
+  color: white;
+}
+
+/***** Deck Div *****/
+
+#player-bet {
+  position: absolute;
+  color: beige;
+  left: 0;
+  right: 0;
+  bottom: 0px;
+}
+
+/***** Player Div *****/
+
+#user-action-bar {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+}
+
+.user-action {
+  box-shadow: 0 0 10px black;
+  margin: 20px 2%;
+}
+
+/***** Chips Div *****/
+
 #chip-container {
   width: 80%;
+  height: 50%;
   padding: 2% 10%;
+  display: flex;
   justify-content: center;
+  align-items: center;
+  flex-flow: wrap;
 }
 
 .chip {
@@ -133,16 +177,4 @@ button:disabled {
   left: 0;
   right: 0;
   bottom: 25px;
-}
-
-#user-action-bar {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  bottom: 20px;
-}
-
-.user-action {
-  box-shadow: 0 0 10px black;
 }
