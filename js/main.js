@@ -158,6 +158,7 @@ var deck = {
 }
 
 var game = {
+  cardsDealt: false,
   setup: function() {
     player.reset();
     deck.create();
@@ -175,6 +176,7 @@ var game = {
     dealer.hand = [];
 
     if (deck.cards.length < 15) {
+      console.log("shuffling");
       deck.create();
     }
 
@@ -218,7 +220,11 @@ var game = {
       UI.displayCard(elemId, card.getImg()); // display card to the screen
     }
 
-    player.calcHand();
+    game.cardsDealt = true;
+
+    if (player.calcHand() == 21) {
+      game.endRound();
+    };
   },
   endRound: function() {
 
@@ -264,6 +270,7 @@ var game = {
       UI.setPlayerPushes(++player.pushes);
     }
 
+    game.cardsDealt = false;
     UI.displayMessage(message); // display message
 
     // setTimeout(function() {
@@ -339,15 +346,17 @@ var player = {
     return calculateHand(this.hand);
   },
   increaseBet: function() {
-    var bet = parseInt($(this).text())
+    if (!game.cardsDealt) {
+      var bet = parseInt($(this).text())
 
-    if (player.chips - bet >= 0) {
-      player.bet += bet;
-      player.chips -= bet;
+      if (player.chips - bet >= 0) {
+        player.bet += bet;
+        player.chips -= bet;
+      }
+
+      UI.updateChipsTotal();
+      UI.updateBetTotal();
     }
-
-    UI.updateChipsTotal();
-    UI.updateBetTotal();
   },
   hit: function() {
 
