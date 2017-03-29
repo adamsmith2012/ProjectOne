@@ -187,9 +187,10 @@ var game = {
       UI.displayMessage("Please make a bet");
     } else {
       game.dealCards();
-
-      UI.displayMessage('Hit / Stand');
-      UI.toggleUserAction();
+      if (game.cardsDealt) { // wont run if player got blackjack
+        UI.displayMessage('Hit / Stand');
+        UI.toggleUserAction();
+      }
     }
 
   },
@@ -223,13 +224,15 @@ var game = {
     game.cardsDealt = true;
 
     if (player.calcHand() == 21) {
+      console.log("Blackjack");
       game.endRound();
-    };
+    }
   },
   endRound: function() {
 
     // TODO: Refactor
     var result = "";
+    console.log("Dealer busted: " + dealer.busted);
     if(player.busted) {
       result = "loss";
     } else if (dealer.busted || player.calcHand() > dealer.calcHand()) {
@@ -354,6 +357,7 @@ var player = {
         player.chips -= bet;
       }
 
+      UI.displayMessage("Press \'Deal\'");
       UI.updateChipsTotal();
       UI.updateBetTotal();
     }
