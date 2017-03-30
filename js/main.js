@@ -5,7 +5,6 @@ $(function() {
   $('#start-btn').on('click', game.setup);
 
   $('#deal-btn').on('click', game.start);
-
   $('#hit-btn').on('click' , player.hit);
   $('#stand-btn').on('click' , player.stand);
 
@@ -17,6 +16,29 @@ $(function() {
 /*************************
 **** Helper Functions ****
 *************************/
+
+var moveAnimate = function(element, newParent){
+    // Allow passing in either a jQuery object or selector
+    element = $(element);
+    newParent= $(newParent);
+
+    var oldOffset = element.offset();
+    element.appendTo(newParent);
+    var newOffset = element.offset();
+
+    var temp = element.clone().appendTo('body');
+    temp.css({
+        'position': 'absolute',
+        'left': oldOffset.left,
+        'top': oldOffset.top
+    });
+    element.hide();
+    temp.animate({'top': newOffset.top - 30, 'left': newOffset.left + 30}, 'slow', function(){
+       element.show();
+       temp.remove();
+    });
+}
+
 
 var sleep = function(miliseconds) {
    var currentTime = new Date().getTime();
@@ -218,7 +240,8 @@ var game = {
         isPlayerCard = true;
       }
 
-      UI.displayCard(elemId, card.getImg()); // display card to the screen
+      setTimeout(UI.displayAndDealCard.bind(null, elemId, card.getImg()), 500 * i); // display card to the screen
+
     }
 
     game.cardsDealt = true;
@@ -276,10 +299,6 @@ var game = {
     game.cardsDealt = false;
     UI.displayMessage(message); // display message
 
-    // setTimeout(function() {
-    //   UI.displayMessage(''); // clear message before next round
-    //   game.start();
-    // }, 2500);
   }
 }
 
@@ -320,7 +339,7 @@ var dealer = {
 
     dealer.hand.push(card);
 
-    UI.displayCard("#dealer-cards", card.getImg()); // display card to the screen
+    UI.displayAndDealCard("#dealer-cards", card.getImg()); // display card to the screen
   }
 }
 
@@ -371,7 +390,7 @@ var player = {
 
     player.hand.push(card);
 
-    UI.displayCard("#player-cards", card.getImg()); // display card to the screen
+    UI.displayAndDealCard("#player-cards", card.getImg()); // display card to the screen
 
     var total = player.calcHand();
 
@@ -407,8 +426,17 @@ var UI = {
       }
     }
   },
-  displayCard: function(elemId, img) {
-    $(elemId).append($('<img>').addClass('card').attr('src', img));
+  displayAndDealCard: function(elemId, img) { // moves card from deck to elemId
+    var $card = $('<img>').addClass('card').attr('src', img);
+
+    $('#deck').append($card);
+
+    moveAnimate($card, $(elemId));
+  },
+  displayCard: function(elemId, img) { // displays card at elemId
+    var $card = $('<img>').addClass('card').attr('src', img);
+
+    $(elemId).append($card);
   },
   setPlayerWins: function(val) {
     $('#player-wins span').text(val);
@@ -428,13 +456,4 @@ var UI = {
   updateBetTotal: function() {
     $('#player-bet span').text(player.bet);
   }
-}
-
-/*************************
-***** Event Handlers *****
-*************************/
-var EventHandlers = {
-
-
-
 }
