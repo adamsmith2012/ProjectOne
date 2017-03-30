@@ -99,6 +99,7 @@ var card = function(initSuit, initValue) {
   var suit = initSuit;
   var value = initValue;
   var img = "images/cards/" + value + "_of_" + suit + ".png";
+  var backImg = "images/cards/blue_back.jpg";
 
   this.getValue = function() {
     return value;
@@ -106,6 +107,10 @@ var card = function(initSuit, initValue) {
 
   this.getImg = function() {
     return img;
+  }
+
+  this.getBackImg = function() {
+    return backImg;
   }
 
   this.display = function() {
@@ -196,6 +201,8 @@ var game = {
     $('#cards-col .card').remove();
     player.hand = [];
     dealer.hand = [];
+    player.busted = false;
+    dealer.busted = false;
 
     if (deck.cards.length < 15) {
       console.log("shuffling");
@@ -240,7 +247,7 @@ var game = {
         isPlayerCard = true;
       }
 
-      setTimeout(UI.displayAndDealCard.bind(null, elemId, card.getImg()), 500 * i); // display card to the screen
+      setTimeout(UI.displayAndDealCard.bind(null, elemId, card), 500 * i); // display card to the screen
 
     }
 
@@ -339,7 +346,7 @@ var dealer = {
 
     dealer.hand.push(card);
 
-    UI.displayAndDealCard("#dealer-cards", card.getImg()); // display card to the screen
+    UI.displayAndDealCard("#dealer-cards", card); // display card to the screen
   }
 }
 
@@ -390,7 +397,7 @@ var player = {
 
     player.hand.push(card);
 
-    UI.displayAndDealCard("#player-cards", card.getImg()); // display card to the screen
+    UI.displayAndDealCard("#player-cards", card); // display card to the screen
 
     var total = player.calcHand();
 
@@ -426,12 +433,14 @@ var UI = {
       }
     }
   },
-  displayAndDealCard: function(elemId, img) { // moves card from deck to elemId
-    var $card = $('<img>').addClass('card').attr('src', img);
+  displayAndDealCard: function(elemId, card) { // moves card from deck to elemId
+    var $card = $('<img>').addClass('card').attr('src', card.getBackImg());
 
     $('#deck').append($card);
 
     moveAnimate($card, $(elemId));
+
+    $card.attr('src', card.getImg());
   },
   displayCard: function(elemId, img) { // displays card at elemId
     var $card = $('<img>').addClass('card').attr('src', img);
