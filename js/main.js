@@ -30,7 +30,7 @@ var moveAnimate = function(element, newParent){
     temp.css({
         'position': 'absolute',
         'left': oldOffset.left,
-        'top': oldOffset.top
+        'top': oldOffset.top - 30
     });
     element.hide();
     temp.animate({'top': newOffset.top - 30, 'left': newOffset.left + 30}, 'slow', function(){
@@ -205,7 +205,6 @@ var game = {
     dealer.busted = false;
 
     if (deck.cards.length < 15) {
-      console.log("shuffling");
       deck.create();
     }
 
@@ -254,7 +253,6 @@ var game = {
     game.cardsDealt = true;
 
     if (player.calcHand() == 21) {
-      console.log("Blackjack");
       game.endRound();
     }
   },
@@ -262,7 +260,6 @@ var game = {
 
     // TODO: Refactor
     var result = "";
-    console.log("Dealer busted: " + dealer.busted);
     if(player.busted) {
       result = "loss";
     } else if (dealer.busted || player.calcHand() > dealer.calcHand()) {
@@ -406,12 +403,10 @@ var player = {
     }
   },
   stand: function() {
-    console.log("player: stand on " + player.calcHand());
     dealer.doTurn();
     UI.toggleUserAction();
   },
   bust: function() {
-    console.log("player: bust on " + player.calcHand());
     player.busted = true;
     game.endRound();
     UI.toggleUserAction();

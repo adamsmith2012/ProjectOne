@@ -12,6 +12,10 @@ button {
   box-shadow: 0 0 3px black;
 }
 
+button:focus {
+  outline:0;
+}
+
 button:disabled {
   cursor: not-allowed;
 }
@@ -160,6 +164,10 @@ button:disabled {
   border-radius: 100%;
   box-shadow: 0 0 10px black;
   cursor: pointer;
+}
+
+.chip:hover {
+  box-shadow: 0 0 30px white;
 }
 
 .red-chip {
