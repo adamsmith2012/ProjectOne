@@ -17,6 +17,8 @@ $(function() {
 **** Helper Functions ****
 *************************/
 
+// From stack overflow
+// http://stackoverflow.com/questions/907279/jquery-animate-moving-dom-element-to-new-parent
 var moveAnimate = function(element, newParent){
     // Allow passing in either a jQuery object or selector
     element = $(element);
@@ -37,14 +39,6 @@ var moveAnimate = function(element, newParent){
        element.show();
        temp.remove();
     });
-}
-
-
-var sleep = function(miliseconds) {
-   var currentTime = new Date().getTime();
-
-   while (currentTime + miliseconds >= new Date().getTime()) {
-   }
 }
 
 // calculates the value of a given hand and returns a number
@@ -258,7 +252,6 @@ var game = {
   },
   endRound: function() {
 
-    // TODO: Refactor
     var result = "";
     if(player.busted) {
       result = "loss";
