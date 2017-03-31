@@ -22,7 +22,7 @@ button:disabled {
 
 #container {
   min-width: 700px;
-  min-height: 600px;
+  min-height: 700px;
   background: green;
   border-radius: 10px;
   padding: 10px;
